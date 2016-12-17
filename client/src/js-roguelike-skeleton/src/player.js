@@ -228,7 +228,7 @@
             } else {
                 // entity occupying target tile (if any)
                 var targetTileEnt = this.game.entityManager.get(x, y);
-
+                console.log(targetTileEnt);
                 // if already occupied
                 if(targetTileEnt){
                     this.game.console.log('Excuse me <strong>Mr.' + targetTileEnt.name + '</strong>, you appear to be in the way.');
@@ -236,6 +236,7 @@
                 } else {
                     // targeted tile (attempting to move into)
                     var targetTile = this.game.map.get(x, y);
+                    console.log(targetTile);
                     return targetTile.bump(this, targetTile);
                 }
             }
