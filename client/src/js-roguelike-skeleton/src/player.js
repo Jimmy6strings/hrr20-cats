@@ -236,6 +236,7 @@
                 } else {
                     // targeted tile (attempting to move into)
                     var targetTile = this.game.map.get(x, y);
+<<<<<<< HEAD
                     if(targetTile.type === 'exitDoorLevel1') {
                         console.log(targetTile);
                         game.enemyGenerator(mapDataLevel4, 28);
@@ -279,6 +280,9 @@
                     }
                     // console.log(targetTile);
                     // console.log(targetTile.bump(this, targetTile));
+=======
+                    console.log(targetTile);
+>>>>>>> 7b3dd5a568f82c92c7d08de88980ad25aa59090e
                     return targetTile.bump(this, targetTile);
                 }
             }
