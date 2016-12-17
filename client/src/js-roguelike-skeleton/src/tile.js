@@ -220,9 +220,9 @@
                 return false;
             }
         },
-        exitDoor: {
-            name: 'exitDoor',
-            char: 'X',
+        exitDoorLevel1: {
+            name: 'ExitDoorLevel1',
+            char: '1',
             color: 'orange',
             bgColor: '#222',
             passable: false,
