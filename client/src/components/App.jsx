@@ -1,5 +1,4 @@
 'use strict';
-
 import React from 'react';
 import Gameinfo from './Gameinfo.jsx';
 import Textfield from './Textfield.jsx';
@@ -38,7 +37,7 @@ class App extends React.Component {
           fail: 0
         }
       ],
-      currentWorld: 'Earth', // !!! Needs to be updated to get the current world !!!
+      currentWorldName: 'Earth', // !!! Needs to be updated to get the current world !!!
       // changes state to swap between game view and profile view
       freePlay: false,
       // changes state to allow free play without signup
@@ -62,13 +61,14 @@ class App extends React.Component {
   componentWillMount() {
     // See https://davidwalsh.name/react-authentication
     this.createLock();
-    // **Variables beginning with _ are meant to be used as references only. Do not mutate them.**
-    var _grid = this.state.grid;
+
+    // Load a fresh game board from new player
     // Connect the roguelike-game to window so App can access it.
     window.gameAppConnector = new GameAppConnector(this);
     // Access information about the game with this variable.
     this.game = window.game;
-
+    // **Variables beginning with _ are meant to be used as references only. Do not mutate them.**
+    var _grid = this.state.grid;
     // Store the player health in the state
     // The roguelike game will update this
     this.setState({
@@ -103,21 +103,21 @@ class App extends React.Component {
       }
       // As soon as we have the profile data, assign the git challenges (which depend on the nickname profile data being available)
       this.setState({profile: profile}, () => {
+        // Load user data if token in computer
         this.getUserData(function(res) {
           this.setState({
-            grid: res[0].grid,
             currentScore: res[0].currentScore,
             highScores: res[0].highScores,
             playerHealth: res[0].health,
-            currentWorld: res[0].currentWorld,
+            currentWorldName: res[0].currentWorldName,
           });
+          // window.currentWorld = res[0].currentWorld;
           window.gameAppConnector.assignGitChallenges();
         }.bind(this));
       });
     })
 
   }
-
 
   componentDidMount() {
     this.game.renderer.draw();
@@ -222,12 +222,11 @@ class App extends React.Component {
   addOrUpdateUser(cb) {
     let assemble = {
       userName: this.state.profile.name,
-      grid: this.state.grid,
       highScores: this.state.highScores,
       currentScore: this.state.currentScore,
       health: this.state.playerHealth,
       userId: this.state.profile.user_id,
-      currentWorld: this.state.currentWorld,
+      currentWorldName: this.state.currentWorldName,
       secret: "cats"
     }
 
@@ -282,7 +281,7 @@ class App extends React.Component {
     }
     // If there is a challenge, display the challenge prompt
     if (this.state.currentEnemy) {
-      gameInfoText = this.state.currentEnemy.challenge.prompt;
+      gameInfoText = this.state.currentEnemy.challenge.question;
     }
     // Render the gameboard, gameinfo, and text input field
     return (
@@ -291,7 +290,6 @@ class App extends React.Component {
           showMenuIconButton={false}
           iconElementRight={this.state.profile ? <div className="right-icon"><span className="github-name">{this.state.profile ? this.state.profile.name : ''}</span><a href="#" onClick={this.swapProfileView.bind(this)}><Avatar src={this.state.profile.picture} size={35} backgroundColor='transparent' /></a></div> : <RaisedButton type="submit" label="SIGN UP!" style={style} onClick={this.signUp} />}
         />
-
         <div className= "game-display">
           <PlayerStatus health={_health} id="heart-display" />
           <Grid grid={_grid} state={this.state} />
@@ -300,7 +298,6 @@ class App extends React.Component {
           <Textfield state={this.state} checkAnswer={this.checkAnswer.bind(this)}/>
           <img id="draggable" class="ui-widget-content" src="../../img/coin.png" height="80" width="80" className={this.state.showPlayerProfile ? 'hidden' : ''}></img>
           <GameOver actions={this.actions} health={_health}/>
-
         </div>
       </div>
     );
