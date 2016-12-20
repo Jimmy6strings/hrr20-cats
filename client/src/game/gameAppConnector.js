@@ -3,7 +3,7 @@
   // INITIALIZE //
   ////////////////
 
-  constructor(app) {
+  constructor(app, world) {
     this.game = window.game;
     this.game.start();
     this.app = app;
@@ -82,7 +82,6 @@
 
   // Assigns challenges to enemies.
   assignChallenges() {
-    console.log(this.challenges.random);
     // var entities = this.game.entityManager.objects;
     // var challenge;
     // entities.forEach(function(entity) {
@@ -99,10 +98,8 @@
     var challenge;
     entities.forEach(function(entity) {
       challenge = this.challenges['random'].pop();
-      console.log(challenge);
       entity.challenge = challenge;
     }.bind(this));
-    console.log(this.challenges.random);
   }
 
   // Run this when we have the profile nickname.

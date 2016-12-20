@@ -11,6 +11,7 @@ import PlayerStatus from './PlayerStatus.jsx';
 import GameOver from './GameOver.jsx';
 import RaisedButton from 'material-ui/RaisedButton';
 import UserProfile from './UserProfile.jsx';
+import BGMusicPlayer from './BackgroundMusic.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -25,19 +26,7 @@ class App extends React.Component {
         success: 0,
         fail: 0
       },
-      highScores: [
-        {// DUMMY DATA!!
-          attempted: 0,
-          success: 0,
-          fail: 0
-        },
-        {
-          attempted: 0,
-          success: 0,
-          fail: 0
-        }
-      ],
-      currentWorldName: 'Earth', // !!! Needs to be updated to get the current world !!!
+      highScores: [],
       // changes state to swap between game view and profile view
       freePlay: false,
       // changes state to allow free play without signup
@@ -61,7 +50,6 @@ class App extends React.Component {
   componentWillMount() {
     // See https://davidwalsh.name/react-authentication
     this.createLock();
-
     // Load a fresh game board from new player
     // Connect the roguelike-game to window so App can access it.
     window.gameAppConnector = new GameAppConnector(this);
@@ -104,16 +92,22 @@ class App extends React.Component {
       // As soon as we have the profile data, assign the git challenges (which depend on the nickname profile data being available)
       this.setState({profile: profile}, () => {
         // Load user data if token in computer
-        this.getUserData(function(res) {
-          this.setState({
-            currentScore: res[0].currentScore,
-            highScores: res[0].highScores,
-            playerHealth: res[0].health,
-            currentWorldName: res[0].currentWorldName,
-          });
-          // window.currentWorld = res[0].currentWorld;
+        if (this.idToken) {
+          this.getUserData(function(res) {
+            this.setState({
+              highScores: res[0].highScores,
+              playerHealth: res[0].health
+            });
+            window.gameAppConnector.assignGitChallenges();
+            let highScores = this.state.highScores.slice()
+              .sort((x, y) => {
+                return Number(x.fail) > Number(y.fail);
+              });
+            this.setState({highScores: highScores});
+          }.bind(this));
+        } else {
           window.gameAppConnector.assignGitChallenges();
-        }.bind(this));
+        }
       });
     })
 
@@ -220,13 +214,17 @@ class App extends React.Component {
   };
 
   addOrUpdateUser(cb) {
+    let highScores = this.state.highScores.slice();
+
+    if (this.state.currentScore.attempted > 0) {
+      highScores.push(this.state.currentScore);
+    }
+
     let assemble = {
       userName: this.state.profile.name,
-      highScores: this.state.highScores,
-      currentScore: this.state.currentScore,
+      highScores: highScores,
       health: this.state.playerHealth,
       userId: this.state.profile.user_id,
-      currentWorldName: this.state.currentWorldName,
       secret: "cats"
     }
 
@@ -271,14 +269,14 @@ class App extends React.Component {
     var toRender;
     var gameInfoText = "";
 
-    const style = {
-      margin: 40
-    };
-
     // Show login screen if user is not yet logged in.
     if (!this.idToken) {
       this.lock.show();
     }
+
+    const style = {
+      margin: 40
+    };
     // If there is a challenge, display the challenge prompt
     if (this.state.currentEnemy) {
       gameInfoText = this.state.currentEnemy.challenge.question;
