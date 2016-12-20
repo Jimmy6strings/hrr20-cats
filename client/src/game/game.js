@@ -2,7 +2,6 @@
 // create the game instance
 // window.currentWorld = mapData;
 var game = new RL.Game();
-console.log(game);
 var mapData = [
     "#########################################################################################",
     "#.........#..........#................................................................#.#",
@@ -21,7 +20,7 @@ var mapData = [
     "#.........#...#......#..................................................................1",
     "#########################################################################################"
     ];
-window.currentWorld = mapData;
+
 var mapDataLevel2 = [
     "#########################################################################",
     "#...#..............2#...............#...........#...................#...#",
@@ -77,7 +76,7 @@ var mapDataLevel3 = [
 ];
 var mapDataLevel4 = [
     "######################################################################################",
-    "#.......................#.......#.....#..........#.....#.............................#",
+    "#.......................#.......#.....#...z......#.....#.............................#",
     "#......#..............................#.....#....#.....#.................########....#",
     "#......#..............................#......#...#......e................#......#....#",
     "#......+.................##############.....#....#.....#.................#......#....#",
@@ -143,48 +142,6 @@ var keyBindings = {
   right: ['RIGHT_ARROW', 'L', 'D'],
 };
 
-// function enemyGenerator(map, enemyNumber) {
-//   var arr = ['e', 'Z', 'b'];
-//   var xLength = map[0].length - 2;
-//   var yLength = map.length - 2;
-
-//   var enemyReplacer = function(mapLine, enemy, randX) {
-//     mapLine = mapLine.substring(0, randX) + enemy + mapLine.substring(randX + 1);
-//     return mapLine;
-//   }
-
-//   while(enemyNumber > 0) {
-//     var randX = Math.floor((Math.random() * xLength) + 1);
-//     var randY = Math.floor((Math.random() * yLength) + 1);
-
-//     if(map[randY][randX] === '.') {
-//       var randEnemy = arr[Math.floor(Math.random() * 3)];
-//       map[randY] = enemyReplacer(map[randY], randEnemy, randX);
-//       enemyNumber--;
-//     }
-//   }
-// }
-
-// function itemGenerator(map, itemNumber) {
-//   var xLength = map[0].length - 2;
-//   var yLength = map.length - 2;
-
-//   var itemReplacer = function(mapLine, item, randX) {
-//     mapLine = mapLine.substring(0, randX) + item + mapLine.substring(randX + 1);
-//     return mapLine;
-//   }
-
-//   while(itemNumber > 0) {
-//     var randX = Math.floor((Math.random() * xLength) + 1);
-//     var randY = Math.floor((Math.random() * yLength) + 1);
-
-//     if(map[randY][randX] === '.') {
-//       var item = ':';
-//       map[randY] = itemReplacer(map[randY], item, randX);
-//       itemNumber--;
-//     }
-//   }
-// }
 game.itemGenerator = function(map, itemNumber) {
   var xLength = map[0].length - 2;
   var yLength = map.length - 2;
@@ -201,7 +158,6 @@ game.itemGenerator = function(map, itemNumber) {
     if(map[randY][randX] === '.') {
       var item = ':';
       map[randY] = itemReplacer(map[randY], item, randX);
-      console.log(randY);
       itemNumber--;
     }
   }
@@ -230,7 +186,7 @@ game.enemyGenerator = function(map, enemyNumber) {
 };
 
 game.itemGenerator(mapData, 4);
-game.enemyGenerator(mapData, 20);
+game.enemyGenerator(mapData, 21);
 // enemyGenerator(mapData, 28);
 // itemGenerator(mapData, 5);
 game.map.loadTilesFromArrayString(mapData, mapCharToType, 'grass');

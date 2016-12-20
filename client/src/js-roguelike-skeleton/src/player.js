@@ -210,6 +210,7 @@
         */
         move: function(x, y){
             if(this.canMoveTo(x, y)){
+                walkThisWay();
                 this.moveTo(x, y);
 
                 // item occuping target tile (if any)
@@ -228,7 +229,10 @@
             } else {
                 // entity occupying target tile (if any)
                 var targetTileEnt = this.game.entityManager.get(x, y);
+<<<<<<< HEAD
                 console.log(targetTileEnt);
+=======
+>>>>>>> f24aebaaecc1d4ff6ddd0b01ac8f6b3ab7796e90
                 //console.log(targetTileEnt);
                 // if already occupied
                 if(targetTileEnt){
@@ -238,16 +242,44 @@
                     // targeted tile (attempting to move into)
                     var targetTile = this.game.map.get(x, y);
                     if(targetTile.type === 'exitDoorLevel1') {
+<<<<<<< HEAD
                         game.itemGenerator(mapDataLevel2, 3);
                         game.enemyGenerator(mapDataLevel2, 10);
 
+=======
+                        // console.log(targetTile);
+                        window.currentWorld = mapDataLevel2;
+                        game.itemGenerator(mapDataLevel2, 5);
+                        game.enemyGenerator(mapDataLevel2, 3);
+                        // console.log(itemCharToType);
+                        // console.log(entityCharToType);
+>>>>>>> f24aebaaecc1d4ff6ddd0b01ac8f6b3ab7796e90
                         game.player.x = 4;
                         game.player.y = 3;
                         game.map.loadTilesFromArrayString(mapDataLevel2, mapCharToType, 'grass');
                         game.itemManager.loadFromArrayString(mapDataLevel2, itemCharToType);
                         game.entityManager.loadFromArrayString(mapDataLevel2, entityCharToType, null, null, game.player);
+<<<<<<< HEAD
 
                         game.setMapSize(game.map.width, game.map.height);
+=======
+                        // console.log(game.itemManager);
+                        //console.log(game.entityManager);
+                        //game.map.loadTilesFromArrayString(maplevel2,mapchartotype, 'grass')
+                        // generate and assign a map object (replaces empty default)
+                        game.setMapSize(game.map.width, game.map.height);
+
+                        // add input keybindings
+                        // game.input.addBindings(keyBindings);
+
+                        // set player starting position
+                        // game.player.x = 8;
+                        // game.player.y = 3;
+
+                        // console.log(game);
+
+                        // make the view a little smaller (10x10 characters)
+>>>>>>> f24aebaaecc1d4ff6ddd0b01ac8f6b3ab7796e90
                         game.renderer.resize(10, 10);
 
                         // get existing DOM elements
@@ -267,14 +299,24 @@
                         ];
                     }
                     if(targetTile.type === 'exitDoorLevel2') {
+<<<<<<< HEAD
                         game.itemGenerator(mapDataLevel3, 2);
                         game.enemyGenerator(mapDataLevel3, 10);
 
+=======
+                        // console.log(targetTile);
+                        window.currentWorld = mapDataLevel3;
+                        game.itemGenerator(mapDataLevel3, 5);
+                        game.enemyGenerator(mapDataLevel3, 0);
+                        // console.log(itemCharToType);
+                        // console.log(entityCharToType);
+>>>>>>> f24aebaaecc1d4ff6ddd0b01ac8f6b3ab7796e90
                         game.player.x = 1;
                         game.player.y = 2;
                         game.map.loadTilesFromArrayString(mapDataLevel3, mapCharToType, 'grass');
                         game.itemManager.loadFromArrayString(mapDataLevel3, itemCharToType);
                         game.entityManager.loadFromArrayString(mapDataLevel3, entityCharToType, null, null, game.player);
+<<<<<<< HEAD
 
                         game.setMapSize(game.map.width, game.map.height);
                         game.renderer.resize(10, 10);
@@ -309,6 +351,31 @@
                         var mapContainerEl = document.getElementById('roguelike-map-container');
                         var consoleContainerEl = document.getElementById('roguelike-console-container');
 
+=======
+                        // console.log(game.itemManager);
+                        //console.log(game.entityManager);
+                        //game.map.loadTilesFromArrayString(maplevel2,mapchartotype, 'grass')
+                        // generate and assign a map object (replaces empty default)
+                        game.setMapSize(game.map.width, game.map.height);
+
+                        // add input keybindings
+                        // game.input.addBindings(keyBindings);
+
+                        // set player starting position
+                        // game.player.x = 8;
+                        // game.player.y = 3;
+
+                        // console.log(game);
+
+                        // make the view a little smaller (10x10 characters)
+                        game.renderer.resize(10, 10);
+
+                        // get existing DOM elements
+                        var mapContainerEl = document.getElementById('roguelike-map-container');
+                        var consoleContainerEl = document.getElementById('roguelike-console-container');
+
+                        // append elements created by the game to the DOM
+>>>>>>> f24aebaaecc1d4ff6ddd0b01ac8f6b3ab7796e90
                         mapContainerEl.appendChild(game.renderer.canvas);
                         consoleContainerEl.appendChild(game.console.el);
 
@@ -320,7 +387,12 @@
                           new RL.RendererLayer(game, 'fov',       {draw: true,    mergeWithPrevLayer: false})
                         ];
                     }
+<<<<<<< HEAD
 
+=======
+                    // console.log(targetTile);
+                    // console.log(targetTile.bump(this, targetTile));
+>>>>>>> f24aebaaecc1d4ff6ddd0b01ac8f6b3ab7796e90
                     return targetTile.bump(this, targetTile);
                 }
             }
